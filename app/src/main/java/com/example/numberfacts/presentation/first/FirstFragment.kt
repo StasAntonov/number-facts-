@@ -8,14 +8,14 @@ import com.example.numberfacts.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FirsFragment: BaseFragment<FragmentFirstBinding>(FragmentFirstBinding::inflate){
+class FirstFragment: BaseFragment<FragmentFirstBinding>(FragmentFirstBinding::inflate){
 
     private val viewModel: FirstViewModel by viewModels()
 
     override fun initObservers() {
         super.initObservers()
         viewModel.fact.observe(viewLifecycleOwner){
-            navigate(FirsFragmentDirections.showDetails(it))
+            navigate(FirstFragmentDirections.showDetails(it))
         }
         viewModel.error.observe(viewLifecycleOwner){
             toast(it)

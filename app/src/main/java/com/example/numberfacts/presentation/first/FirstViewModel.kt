@@ -3,6 +3,10 @@ package com.example.numberfacts.presentation.first
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
+import androidx.paging.liveData
 import com.example.numberfacts.data.base.ApiResponse
 import com.example.numberfacts.domain.SingleLiveEvent
 import com.example.numberfacts.domain.repository.INumberRepository
@@ -20,6 +24,11 @@ class FirstViewModel @Inject constructor(
 
     private var _error = SingleLiveEvent<String>()
     val error: LiveData<String> = _error
+
+    val localNumberFacts = Pager(
+        PagingConfig(pageSize = 10)) {
+        numberRepository.getAllLocalFacts()
+    }.liveData.cachedIn(viewModelScope)
 
     fun getFact(number:Long) {
         viewModelScope.launch {
