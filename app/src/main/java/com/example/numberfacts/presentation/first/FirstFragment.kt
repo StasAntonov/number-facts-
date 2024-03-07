@@ -3,6 +3,7 @@ package com.example.numberfacts.presentation.first
 import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.numberfacts.R
 import com.example.numberfacts.common.PagingAdapter
 import com.example.numberfacts.databinding.FragmentFirstBinding
 import com.example.numberfacts.databinding.ItemNumberFactBinding
@@ -54,7 +55,7 @@ class FirstFragment: BaseFragment<FragmentFirstBinding>(FragmentFirstBinding::in
             if (number.isNotEmpty() && number.isDigitsOnly()){
                 viewModel.getFact(number.toLong())
             } else {
-                toast("Enter number")
+                toast(getString(R.string.enter_a_number))
             }
         }
 
