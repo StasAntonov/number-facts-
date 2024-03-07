@@ -2,6 +2,7 @@ package com.example.numberfacts.di
 
 
 import com.example.numberfacts.BuildConfig
+import com.example.numberfacts.data.datasource.remote.network.NumbersApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -18,7 +19,7 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(ScalarsConverterFactory.create())
         .baseUrl(BuildConfig.BASE_URL)
         .client(okHttpClient)
         .build()
@@ -36,4 +37,10 @@ object NetworkModule {
 
         return builder.build()
     }
+
+    @Provides
+    @Singleton
+    fun provideNumbersApi (retrofit: Retrofit): NumbersApi =
+        retrofit.create(NumbersApi::class.java)
+
 }

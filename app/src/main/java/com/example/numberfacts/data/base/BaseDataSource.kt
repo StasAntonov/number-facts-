@@ -3,7 +3,7 @@ package com.example.numberfacts.data.base
 import retrofit2.Response
 
 typealias RepositoryRequest<T> = suspend () -> Response<T>
-class BaseRepository {
+abstract class BaseDataSource {
 
     suspend fun <T> request (execute: RepositoryRequest<T>): ApiResponse<T> {
         return try {
