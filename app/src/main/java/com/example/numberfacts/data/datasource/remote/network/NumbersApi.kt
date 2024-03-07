@@ -6,12 +6,17 @@ import retrofit2.http.Path
 
 interface NumbersApi {
 
-    @GET("{number}")
+    @GET("{$NUMBER}")
     suspend fun getNumberFact(
-        @Path("number") number: Long
+        @Path(NUMBER) number: Long
     ): Response<String>
 
-    @GET("random")
+    @GET(RANDOM)
     suspend fun getRandomNumberFact(): Response<String>
+
+    companion object {
+        const val  NUMBER = "number"
+        const val  RANDOM = "random"
+    }
 
 }

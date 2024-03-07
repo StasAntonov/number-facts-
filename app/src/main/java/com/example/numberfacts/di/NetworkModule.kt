@@ -1,6 +1,5 @@
 package com.example.numberfacts.di
 
-
 import com.example.numberfacts.BuildConfig
 import com.example.numberfacts.data.datasource.remote.network.NumbersApi
 import dagger.Module
@@ -16,6 +15,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
@@ -34,7 +34,6 @@ object NetworkModule {
                 HttpLoggingInterceptor().apply { setLevel(HttpLoggingInterceptor.Level.BODY) }
             builder.addInterceptor(logging)
         }
-
         return builder.build()
     }
 

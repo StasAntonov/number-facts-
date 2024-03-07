@@ -29,7 +29,7 @@ class FirstViewModel @Inject constructor(
     val error: LiveData<String> = _error
 
     val localNumberFacts = Pager(
-        PagingConfig(pageSize = 10)) {
+        PagingConfig(pageSize = PAGE_SIZE)) {
         numberRepository.getAllLocalFacts()
     }.liveData.map { it.map {
             data -> data.toNumberFact()
@@ -54,5 +54,9 @@ class FirstViewModel @Inject constructor(
             is ApiResponse.Error ->
                 _error.postValue(this.toString())
         }
+    }
+
+    companion object {
+        const val PAGE_SIZE = 10
     }
 }
