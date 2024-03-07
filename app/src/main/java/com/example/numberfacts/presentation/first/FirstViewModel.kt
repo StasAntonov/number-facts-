@@ -2,13 +2,16 @@ package com.example.numberfacts.presentation.first
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import androidx.paging.liveData
+import androidx.paging.map
 import com.example.numberfacts.data.base.ApiResponse
 import com.example.numberfacts.domain.SingleLiveEvent
+import com.example.numberfacts.domain.model.toNumberFact
 import com.example.numberfacts.domain.repository.INumberRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -28,7 +31,9 @@ class FirstViewModel @Inject constructor(
     val localNumberFacts = Pager(
         PagingConfig(pageSize = 10)) {
         numberRepository.getAllLocalFacts()
-    }.liveData.cachedIn(viewModelScope)
+    }.liveData.map { it.map {
+            data -> data.toNumberFact()
+    } }.cachedIn(viewModelScope)
 
     fun getFact(number:Long) {
         viewModelScope.launch {

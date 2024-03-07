@@ -8,6 +8,7 @@ import com.example.numberfacts.domain.model.NumberFact
 import com.example.numberfacts.domain.model.toNumberEntity
 import com.example.numberfacts.domain.remote.IRemoteDataSource
 import com.example.numberfacts.domain.repository.INumberRepository
+import com.example.numberfacts.ext.toLong
 import javax.inject.Inject
 
 class NumberRepositoryImpl @Inject constructor(
@@ -15,29 +16,32 @@ class NumberRepositoryImpl @Inject constructor(
     private val localDataSource: ILocalDataSource
 ): INumberRepository {
     override suspend fun getNumberFact(number: Long): ApiResponse<String> {
-        remoteDataSource.getNumberFact(number).let {
-            when (it) {
-                is ApiResponse.Success -> {
-                    addLocalFact(NumberFact(it.data,number))
-                }
-                else -> {}
-            }
-            return it
-        }
+        return remoteDataSource.getNumberFact(number).handleFactSave(number)
     }
 
     override suspend fun getRandomNumberFact(): ApiResponse<String> {
-        return remoteDataSource.getRandomNumberFact()
+        return remoteDataSource.getRandomNumberFact().handleFactSave(null)
+
     }
 
     override fun getAllLocalFacts(): PagingSource<Int, NumberEntity> {
-        return localDataSource.getAllLocalFacts() // todo Number
-//        return localDataSource.getAllLocalFacts().map {
-//            it.toNumberFact()
-//        }
+        return localDataSource.getAllLocalFacts()
     }
 
     override suspend fun addLocalFact(fact: NumberFact) {
         localDataSource.addLocalFact(fact.toNumberEntity())
     }
+
+    private suspend fun ApiResponse<String>.handleFactSave(number: Long?): ApiResponse<String>{
+        when (this){
+            is ApiResponse.Success -> {
+                addLocalFact(NumberFact(this.data,number ?: this.data.toLong()))
+            }
+            is ApiResponse.Error -> {
+
+            }
+        }
+        return this
+    }
+
 }

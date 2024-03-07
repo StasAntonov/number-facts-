@@ -9,7 +9,7 @@ import com.example.numberfacts.data.datasource.local.entities.NumberEntity
 
 @Dao
 interface NumbersDao {
-    @Query("SELECT * FROM facts")
+    @Query("SELECT * FROM facts order by id desc")
     fun getAllFacts(): PagingSource<Int, NumberEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

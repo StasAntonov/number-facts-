@@ -7,7 +7,6 @@ fun NumberFact.toNumberEntity() = NumberEntity(
     number = number
 )
 
-fun NumberEntity.toNumberFact() = NumberFact(
-    fact = fact,
-    number = number
-)
+fun NumberEntity.toNumberFact(): NumberFact {
+    return NumberFact(this.fact, this.number)
+}
